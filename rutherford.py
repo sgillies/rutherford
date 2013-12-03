@@ -7,13 +7,18 @@ Atom feed extension for Tinkerer.
 :license: BSD, see LICENSE file
 """
 
+from datetime import datetime
+import logging
 import os.path
 from urlparse import urlparse
 
 from jinja2 import Environment, PackageLoader
+import pytz
 from sphinx.util.compat import Directive
 from tinkerer import __version__ as tinkerer_version
+from tzlocal import get_localzone
 
+log = logging.getLogger('rutherford')
 
 class SummaryDirective(Directive):
     """Optional summary metadata for posts and pages.
@@ -45,6 +50,10 @@ class SummaryDirective(Directive):
 
 def generate_feed(app, err):
     """Generates Atom feed."""
+    if err is not None:
+        log.warning("error found at build-finished, feed not written")
+        return None
+
     env = app.builder.env
     # don't do anything if no posts are available
     if not env.blog_posts:
@@ -55,14 +64,23 @@ def generate_feed(app, err):
     parts = urlparse(app.config.website)
     netloc = parts.netloc
     idpath = parts.path.strip('/').replace("/", ":")
-
+    
+    tz = get_localzone()
+    
     # feed items
     context["entries"] = []
     for post in env.blog_posts:
+        
         link = "%s%s.html" % (app.config.website, post)
 
         timestamp = env.blog_metadata[post].date.isoformat()
         entry_date = timestamp.split('T')[0]
+        
+        # updated time
+        post_path = os.path.join(app.srcdir, post + ".rst")
+        mtime = os.path.getmtime(post_path)
+        mdt = datetime.fromtimestamp(mtime)
+        updated = tz.localize(mdt).isoformat()
 
         categories = [
             category[1] for category in 
@@ -77,6 +95,7 @@ def generate_feed(app, err):
             "summary": getattr(env.blog_metadata[post], 'summary', None),
             "categories": categories, # terms
             "published": timestamp,
+            "updated": updated,
             "author": env.blog_metadata[post].author,
             "content": env.blog_metadata[post].body,
         })
@@ -92,7 +111,7 @@ def generate_feed(app, err):
     context["tinkerer_version"] = tinkerer_version
   
     # feed pubDate is equal to latest post pubDate
-    context["updated"] = context["entries"][0]["published"]
+    context["updated"] = context["entries"][0]["updated"]
 
     jenv = Environment(loader=PackageLoader('rutherford', 'templates'))
     template = jenv.get_template('feed.xml')
@@ -109,7 +128,6 @@ def setup(app):
     # new config values
     app.add_config_value('blog_date', "2013", True)
     app.add_config_value("rights", "", True)
-    app.add_config_value("use_atom_feed", False, True)
 
     # new directives
     app.add_directive("summary", SummaryDirective)

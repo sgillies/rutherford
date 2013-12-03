@@ -18,7 +18,7 @@ setup(name='rutherford',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          'pytz', 'tzlocal'
       ],
       entry_points="""
       # -*- Entry points: -*-

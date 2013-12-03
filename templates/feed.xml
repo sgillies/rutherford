@@ -13,7 +13,8 @@
     <title>{{ entry.title }}</title>
     <link rel="alternate" type="text/html" href="{{ entry.link }}"/>
     <id>{{ entry.id }}</id>
-    <published>{{ entry.published }}</published>
+    <published>{{ entry.published }}Z</published>
+    <updated>{{ entry.updated }}</updated>
     <author>
       <name>{{ entry.author }}</name>
     </author>
