@@ -1,0 +1,8 @@
+Changes
+=======
+
+0.6 (2013-12-03)
+----------------
+- Remove use_atom_feed config option
+- Add entry atom:updated elements to feed
+- Require pytz and tzlocal

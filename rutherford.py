@@ -122,7 +122,6 @@ def generate_feed(app, err):
 def add_atom_context(app, pagename, templatename, context, doctree):
     """Add items to HTML page context"""
     context["rights"] = app.config.rights
-    context["use_atom_feed"] = app.config.use_atom_feed
 
 def setup(app):
     # new config values
