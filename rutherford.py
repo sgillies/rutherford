@@ -69,7 +69,8 @@ def generate_feed(app, err):
     
     # feed items
     context["entries"] = []
-    for post in env.blog_posts:
+
+    for post in env.blog_posts[:app.config.posts_per_page]:
         
         link = "%s%s.html" % (app.config.website, post)
 
