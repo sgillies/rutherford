@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.7 (2014-03-27)
+----------------
+- Package restructuring (#2).
+
 0.6 (2013-12-03)
 ----------------
 - Remove use_atom_feed config option

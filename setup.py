@@ -14,8 +14,9 @@ setup(name='rutherford',
       author_email='sean.gillies@gmail.com',
       url='http://github.com/sgillies/rutherford',
       license='BSD',
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=['rutherford'],
       include_package_data=True,
+      package_data={'rutherford': ['templates/*']},
       zip_safe=False,
       install_requires=[
           'pytz', 'tzlocal'
