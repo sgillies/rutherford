@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.7.1 (2014-05-07)
+------------------
+- Fix setup so template is included in sdist (#5).
+
 0.7 (2014-03-27)
 ----------------
 - Package restructuring (#2).
