@@ -15,7 +15,6 @@ setup(name='rutherford',
       url='http://github.com/sgillies/rutherford',
       license='BSD',
       packages=['rutherford'],
-      include_package_data=True,
       package_data={'rutherford': ['templates/*']},
       zip_safe=False,
       install_requires=[
